@@ -35,13 +35,24 @@ public class Reservation {
     public Date getCheckOut() {
         return CheckOut;
     }
+
     public long duration() {
         long diff = getCheckOut().getTime() - checkIn.getTime();
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
-    public void updateDates(Date checkIn, Date CheckOut) {
+
+    public String updateDates(Date checkIn, Date CheckOut) {
+        Date now = new Date();
+        if (checkIn.before(now) || CheckOut.before(now)) {
+            return "Reservation dates for update must be future dates";
+        }
+        if (!CheckOut.after(checkIn)) {
+            return "Check-Out date must be after check-in date";
+
+        }
         this.checkIn = checkIn;
         this.CheckOut = CheckOut;
+        return null;
     }
     @Override
     public String toString() {
